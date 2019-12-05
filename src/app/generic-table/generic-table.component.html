@@ -1,12 +1,114 @@
-<table>
-<thead>
-<tr>
-  <th *ngFor="let head of tableContent.header" scope="col">{{head.columnLabel}} </th>
-</tr>
-</thead>
-<tbody>
-<tr *ngFor="let row of tableContent.data">
-  <td *ngFor="let header of tableContent.header">{{row[header.columnValue]}}</td>
-</tr>
-</tbody>
-</table>
+<h3 class="text-center"> Table With Pagination</h3>
+<br>
+<div class="container">
+  <div class="row mt-3 ">
+    <div class="col-sm-2">
+      <select class="form-control" [(ngModel)]="maxPageNumberSelector" (change)="onChange($event)">
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+      </select>
+    </div>
+    <div class="col float-right">
+      <nav>
+        <ul class="pagination">
+          <li [ngClass]="(isPaginated && responsePageObject['currentPage'] !== 1)?'page-item':'page-item disabled'">
+            <a class="page-link" href="javascript:void(0)" (click)="setPage(responsePageObject['currentPage'] - 1)">
+              <span aria-hidden="true">&laquo;</span>
+              <span class="sr-only">Previous</span>
+            </a>
+          </li>
+          <ng-container *ngFor="let page of responsePageObject['pages']">
+            <li [ngClass]="(responsePageObject['currentPage'] !== page)?'page-item':'page-item active'">
+              <a class="page-link" href="javascript:void(0)" (click)="setPage(page)">{{page}}</a>
+            </li>
+          </ng-container>
+          <li
+            [ngClass]="(isPaginated && responsePageObject['currentPage'] < responsePageObject['totalPages'])?'page-item':'page-item disabled'">
+            <a class="page-link" href="javascript:void(0)" (click)="setPage(responsePageObject['currentPage'] + 1)">
+              <span aria-hidden="true">&raquo;</span>
+              <span class="sr-only">Next</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="align-items-end">
+      <ng-container *ngIf="searchBar !== false">
+        <div class="col-sm-5 d-inline-block">
+          <select class="form-control" [(ngModel)]="columnToSearch">
+            <option  value=""></option>
+            <ng-container *ngFor="let head of tableContent.header">
+              <option value="{{head.columnValue}}">{{head.columnLabel}}</option>
+            </ng-container>
+          </select>
+        </div>
+        <div class="col-sm-5 d-inline-block">
+          <input class="form-control" type="text" [(ngModel)]="search" placeholder="&#xF002; Cerca...">
+        </div>
+      </ng-container>
+    </div>
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <ng-container *ngFor="let head of tableContent.header">
+          <th (click)="orderBy(head.columnValue)">
+            <fa name="{{icon}}" style="cursor: pointer"></fa>
+            {{head.columnLabel}} </th>
+        </ng-container>
+      </tr>
+      </thead>
+      <tbody>
+      <ng-container *ngIf="!isPaginated">
+        <tr *ngFor="let row of tableContent.data | filter : search : columnToSearch">
+          <td *ngFor="let header of tableContent.header">{{lodash.get(row, header.columnValue)}}</td>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="isPaginated">
+        <tr *ngFor="let row of paginatedData | filter : search : columnToSearch">
+          <td *ngFor="let header of tableContent.header">{{lodash.get(row, header.columnValue)}}</td>
+        </tr>
+      </ng-container>
+      </tbody>
+    </table>
+    <div class="row mt-3 ">
+      <div class="col-sm-2">
+        <select class="form-control" [(ngModel)]="maxPageNumberSelector" (change)="onChange($event)">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+      </div>
+
+      <div class="col float-right">
+        <nav>
+          <ul class="pagination">
+            <li [ngClass]="(isPaginated && responsePageObject['currentPage'] !== 1)?'page-item':'page-item disabled'">
+              <a class="page-link" href="javascript:void(0)" (click)="setPage(responsePageObject['currentPage'] - 1)">
+                <span aria-hidden="true">&laquo;</span>
+                <span class="sr-only">Previous</span>
+              </a>
+            </li>
+            <ng-container *ngFor="let page of responsePageObject['pages']">
+              <li [ngClass]="(responsePageObject['currentPage'] !== page)?'page-item':'page-item active'">
+                <a class="page-link" href="javascript:void(0)" (click)="setPage(page)">{{page}}</a>
+              </li>
+            </ng-container>
+
+            <li
+              [ngClass]="(isPaginated && responsePageObject['currentPage'] < responsePageObject['totalPages'])?'page-item':'page-item disabled'">
+              <a class="page-link" href="javascript:void(0)" (click)="setPage(responsePageObject['currentPage'] + 1)">
+                <span aria-hidden="true">&raquo;</span>
+                <span class="sr-only">Next</span>
+              </a>
+            </li>
+
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>

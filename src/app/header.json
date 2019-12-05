@@ -1,0 +1,38 @@
+[
+  {
+    "columnValue": "Name",
+    "columnLabel": "nome"
+  },
+  {
+    "columnValue": "Miles_per_Gallon",
+    "columnLabel": "miglia per gallone"
+  },
+  {
+    "columnValue": "Cylinders",
+    "columnLabel": "cilindri"
+  },
+  {
+    "columnValue": "Displacement",
+    "columnLabel": "cilindrata"
+  },
+  {
+    "columnValue": "Horsepower",
+    "columnLabel": "cavalli"
+  },
+  {
+    "columnValue": "Weight_in_lbs",
+    "columnLabel": "peso in libbre"
+  },
+  {
+    "columnValue": "Acceleration",
+    "columnLabel": "accelerazione"
+  },
+  {
+    "columnValue": "Year",
+    "columnLabel": "anno"
+  },
+  {
+    "columnValue": "Origin",
+    "columnLabel": "paese costruttore"
+  }
+]
